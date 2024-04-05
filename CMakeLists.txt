@@ -1,21 +1,19 @@
-﻿# CMakeList.txt: проект CMake для asmNotes; включите исходный код и определения,
-# укажите здесь логику для конкретного проекта.
-#
-cmake_minimum_required (VERSION 3.8)
+﻿cmake_minimum_required (VERSION 3.28)
 
-# Включение горячей перезагрузки для компиляторов MSVC, если поддерживается.
-if (POLICY CMP0141)
-  cmake_policy(SET CMP0141 NEW)
-  set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
-endif()
+project ("asmNotes" VERSION 0.1 LANGUAGES CXX ASM)
 
-project ("asmNotes")
+#For Windows. Enable Assembler language
+enable_language(ASM_MASM)
 
-# Добавьте источник в исполняемый файл этого проекта.
-add_executable (asmNotes "asmNotes.cpp" "asmNotes.h")
+set(SRC_PATH ${CMAKE_SOURCE_DIR})
+set(ASM_PATH ${CMAKE_SOURCE_DIR}/asm)
+set(INC_PATH ${CMAKE_SOURCE_DIR}/include)
+set(SRC ${SRC_PATH}/main.cpp)
+set(ASM ${ASM_PATH}/main.asm)
+set(HRDS ${INC_PATH}/main.h)
 
-if (CMAKE_VERSION VERSION_GREATER 3.12)
-  set_property(TARGET asmNotes PROPERTY CXX_STANDARD 20)
-endif()
+#For asm files
+set_property(SOURCE ${ASM} APPEND PROPERTY COMPOLE_OPTIONS "-x" "assembler-with-cpp")
 
-# TODO: Добавьте тесты и целевые объекты, если это необходимо.
+add_executable (asmNotes ${SRC} ${ASM} ${HDRS})
+target_include_directories(asmNotes PUBLIC ${ASM_PATH} ${INC_PATH})
