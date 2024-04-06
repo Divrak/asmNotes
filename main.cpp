@@ -35,7 +35,14 @@ int main(void)
 	screenBuffer = new CHAR_INFO[screenBufferSize];
 	memset(screenBuffer, 0, screenBufferSize * sizeof(CHAR_INFO));
 
-	drawLine((int*)screenBuffer, 2, 1, 10, L'-', 0x50);
+	CHAR_INFO symbol {};
+
+	symbol.Char.UnicodeChar = L'-';
+	symbol.Attributes = 0x50;
+	auto pos = Spos {1, 2};
+
+	drawLine(screenBuffer, pos, 10, symbol);
+
 	//Copy from the remporary buffer to the new screen buffer
 	if(!WriteConsoleOutput( screenBufferHandle, screenBuffer, screenBufferInfo.dwSize, screenBufferPos, &screenBufferInfo.srWindow))
 	{

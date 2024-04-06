@@ -8,4 +8,4 @@ struct Spos
 	short Y;
 };
 
-extern "C" void drawLine(int *screenBuffer, Spos coords, int len, wchar_t symbol, short attribute);
+extern "C" void drawLine(CHAR_INFO *screenBuffer, Spos pos, int len, CHAR_INFO symbol);
